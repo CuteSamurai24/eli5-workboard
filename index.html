@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="五分钟看懂 AI In One WorkBoard：把 6 家 AI 编程助手的干活记录收成一块桌面看板。">
+<meta property="og:title" content="ELI5 · AI In One（WorkBoard）是什么">
+<meta property="og:description" content="你家 AI 干活的车间大屏。纯说明页，不连外网也能打开。">
+<meta property="og:type" content="article">
+<title>ELI5 · AI In One（WorkBoard）是什么</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Microsoft YaHei", "PingFang SC", "Source Han Sans SC", "Noto Sans SC", "Segoe UI", sans-serif;
+    background: #f2f4f8; color: #2a2f3a; line-height: 1.75; padding: 32px 16px 64px;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; }
+  header.hero {
+    background: linear-gradient(135deg, #2f3441 0%, #3d4759 100%);
+    color: #fff; border-radius: 16px; padding: 36px 40px; margin-bottom: 24px;
+  }
+  header.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 10px; }
+  header.hero p { font-size: 16px; color: #cdd5e0; max-width: 720px; }
+  header.hero .tag { display: inline-block; background: #3b82f6; color: #fff; font-size: 12px;
+    padding: 2px 10px; border-radius: 999px; margin-bottom: 12px; letter-spacing: 1px; }
+  .panel {
+    background: #fff; border-radius: 14px; padding: 28px 32px; margin-bottom: 22px;
+    box-shadow: 0 1px 4px rgba(30,40,60,.07);
+  }
+  .panel h2 { font-size: 19px; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+  .panel h2 .num {
+    background: #3b82f6; color: #fff; width: 28px; height: 28px; border-radius: 8px;
+    display: inline-flex; align-items: center; justify-content: center; font-size: 15px; flex: none;
+  }
+  .panel p.lead { color: #4a5265; margin-bottom: 16px; }
+  .caption { font-size: 13px; color: #8a93a6; margin-top: 10px; text-align: center; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 720px) { .grid2, .grid3 { grid-template-columns: 1fr; } header.hero, .panel, .recap { padding: 22px 18px; } }
+  .mini {
+    background: #f8fafc; border: 1px solid #e5eaf2; border-radius: 12px; padding: 16px 18px;
+  }
+  .mini h3 { font-size: 15px; margin-bottom: 8px; }
+  .mini p { font-size: 13.5px; color: #55607a; }
+  .flow-svg { width: 100%; height: auto; display: block; }
+  .gui-svg { width: 100%; height: auto; display: block; border-radius: 10px; }
+  .note {
+    background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px;
+    padding: 12px 16px; font-size: 13.5px; color: #713f12; margin-top: 14px;
+  }
+  .recap {
+    background: linear-gradient(135deg, #0e9f6e 0%, #0c8a5f 100%);
+    color: #fff; border-radius: 14px; padding: 28px 32px;
+  }
+  .recap h2 { font-size: 19px; margin-bottom: 12px; }
+  .recap li { margin: 8px 0 8px 20px; font-size: 15px; }
+  .recap .one { margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.25);
+    font-size: 16.5px; font-weight: 700; }
+  code.k { background: #eef1f6; border-radius: 5px; padding: 1px 7px; font-size: 13px;
+    font-family: Consolas, "Sarasa Mono SC", monospace; color: #334; }
+  .pubbar {
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+    margin-bottom: 16px; font-size: 13px; color: #5b6578;
+  }
+  .pubbar span {
+    background: #fff; border: 1px solid #e5eaf2; border-radius: 999px; padding: 4px 12px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="pubbar">
+    <span>纯说明页</span>
+    <span>不连外网也能打开</span>
+    <span>没有广告、没有追踪</span>
+  </div>
+
+  <header class="hero">
+    <span class="tag">ELI5 · 五分钟看懂</span>
+    <h1>AI In One —— 你家 AI 干活的「车间大屏」</h1>
+    <p>你雇了 6 个 AI 编程助手（zcode、Cursor、DSH、kimi-code、minimax-code、qoder）替你打工。
+    这个项目做了一块「大屏 + 管家」：自动把 6 家的干活记录收拢、洗白、归类，
+    变成一块双击就能打开的桌面看板，外加一个记忆库和一本 token 账本。</p>
+  </header>
+
+  <section class="panel">
+    <h2><span class="num">1</span>它解决什么烦？</h2>
+    <p class="lead">打个比方：6 个工人分别在 6 个房间干活，每人随手留便条（会话记录），从不互相通气。</p>
+    <div class="grid2">
+      <div class="mini" style="border-top:4px solid #ef4444;">
+        <h3>没有它的时候</h3>
+        <p>· 同一件事的便条散在 6 个工具里，找不全<br>
+           · 干到第几天了？哪些收工了？全靠脑子记<br>
+           · AI 记住了什么经验、烧了多少 token，没人说得清</p>
+      </div>
+      <div class="mini" style="border-top:4px solid #10b981;">
+        <h3>有了它以后</h3>
+        <p>· 同一件事的便条自动合成<span style="color:#0e9f6e;font-weight:700;">一张工单卡</span>，标清哪几家工具在干<br>
+           · 工单自动分进 5 个筐：主推 / 等待 / 未结 / 已结 / 新灵感<br>
+           · 记忆有库、经验有签核、token 有账单，一眼看全</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2><span class="num">2</span>便条是怎么变成看板的？（五步流水线）</h2>
+    <p class="lead">全程自动。唯一请来的「外援」是一台云端大模型（GLM），当聚类文员用。</p>
+    <svg class="flow-svg" viewBox="0 0 920 300" role="img" aria-label="五步流水线示意图：六家工具会话，经扫描、脱敏、GLM聚类、证据对账，最终进入桌面看板">
+      <g font-size="12" fill="#334">
+        <rect x="10" y="20" width="92" height="34" rx="8" fill="#eef1f6" stroke="#d5dbe6"/>
+        <text x="56" y="41" text-anchor="middle">zcode</text>
+        <rect x="10" y="62" width="92" height="34" rx="8" fill="#eef1f6" stroke="#d5dbe6"/>
+        <text x="56" y="83" text-anchor="middle">Cursor</text>
+        <rect x="10" y="104" width="92" height="34" rx="8" fill="#eef1f6" stroke="#d5dbe6"/>
+        <text x="56" y="125" text-anchor="middle">DSH</text>
+        <rect x="10" y="146" width="92" height="34" rx="8" fill="#eef1f6" stroke="#d5dbe6"/>
+        <text x="56" y="167" text-anchor="middle">kimi-code</text>
+        <rect x="10" y="188" width="92" height="34" rx="8" fill="#eef1f6" stroke="#d5dbe6"/>
+        <text x="56" y="209" text-anchor="middle">minimax</text>
+        <rect x="10" y="230" width="92" height="34" rx="8" fill="#eef1f6" stroke="#d5dbe6"/>
+        <text x="56" y="251" text-anchor="middle">qoder</text>
+      </g>
+      <text x="56" y="285" text-anchor="middle" font-size="11" fill="#8a93a6">六家工具的会话记录</text>
+      <path d="M106 142 H140" stroke="#94a3b8" stroke-width="2" marker-end="url(#arr)"/>
+      <rect x="145" y="112" width="110" height="60" rx="10" fill="#e8f0fe" stroke="#93b4f8"/>
+      <text x="200" y="136" text-anchor="middle" font-size="13" fill="#1d4ed8" font-weight="bold">① 扫描器</text>
+      <text x="200" y="156" text-anchor="middle" font-size="11" fill="#3b5b9e">读便条，摘成五行小结</text>
+      <path d="M259 142 H293" stroke="#94a3b8" stroke-width="2" marker-end="url(#arr)"/>
+      <rect x="298" y="112" width="110" height="60" rx="10" fill="#fdf3e3" stroke="#f3cd8a"/>
+      <text x="353" y="136" text-anchor="middle" font-size="13" fill="#b45309" font-weight="bold">② 脱敏</text>
+      <text x="353" y="156" text-anchor="middle" font-size="11" fill="#92600a">洗掉钥匙·路径·隐私</text>
+      <path d="M412 142 H446" stroke="#94a3b8" stroke-width="2" marker-end="url(#arr)"/>
+      <rect x="451" y="98" width="130" height="88" rx="10" fill="#f1ebfb" stroke="#c4b0f2"/>
+      <text x="516" y="122" text-anchor="middle" font-size="13" fill="#6d28d9" font-weight="bold">③ GLM 文员</text>
+      <text x="516" y="142" text-anchor="middle" font-size="11" fill="#6b5a9e">同一件事的便条</text>
+      <text x="516" y="158" text-anchor="middle" font-size="11" fill="#6b5a9e">合并成一张工单卡</text>
+      <text x="516" y="176" text-anchor="middle" font-size="10" fill="#9887c9">（云端·仅见脱敏文）</text>
+      <path d="M585 142 H619" stroke="#94a3b8" stroke-width="2" marker-end="url(#arr)"/>
+      <rect x="624" y="112" width="110" height="60" rx="10" fill="#e6f7ef" stroke="#8fd4b4"/>
+      <text x="679" y="136" text-anchor="middle" font-size="13" fill="#0e7a55" font-weight="bold">④ 对账</text>
+      <text x="679" y="156" text-anchor="middle" font-size="11" fill="#2f7a5f">和 git / 收件箱核对</text>
+      <path d="M738 142 H772" stroke="#94a3b8" stroke-width="2" marker-end="url(#arr)"/>
+      <rect x="777" y="88" width="132" height="108" rx="10" fill="#2f3441"/>
+      <text x="843" y="114" text-anchor="middle" font-size="13" fill="#fff" font-weight="bold">⑤ 桌面看板</text>
+      <rect x="790" y="126" width="52" height="16" rx="4" fill="#3b82f6"/>
+      <text x="816" y="138" text-anchor="middle" font-size="10" fill="#fff">主推 ≤3</text>
+      <rect x="846" y="126" width="52" height="16" rx="4" fill="#f59e0b"/>
+      <text x="872" y="138" text-anchor="middle" font-size="10" fill="#fff">等待中</text>
+      <rect x="790" y="148" width="52" height="16" rx="4" fill="#64748b"/>
+      <text x="816" y="160" text-anchor="middle" font-size="10" fill="#fff">未结</text>
+      <rect x="846" y="148" width="52" height="16" rx="4" fill="#10b981"/>
+      <text x="872" y="160" text-anchor="middle" font-size="10" fill="#fff">已结</text>
+      <rect x="790" y="170" width="108" height="16" rx="4" fill="#7c3aed"/>
+      <text x="844" y="182" text-anchor="middle" font-size="10" fill="#fff">新灵感（手动加）</text>
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+          <path d="M0,0 L7,3 L0,6 z" fill="#94a3b8"/>
+        </marker>
+      </defs>
+    </svg>
+    <p class="caption">聚合结果落盘成 <code class="k">tasks.json</code>：每张卡都带「来源便条编号」，可追溯。打开看板只读这份文件，不会每次启动都重算。</p>
+    <div class="note">安全设计：任何内容出网给 GLM 之前必须先过「脱敏」这一关——API 钥匙、路径、隐私先洗掉；密钥永不进代码和日志；看板本身无遥测、可离线。</div>
+  </section>
+
+  <section class="panel">
+    <h2><span class="num">3</span>双击打开的窗口里有什么？（四个页签）</h2>
+    <p class="lead">成品是一个 Windows 桌面程序（<code class="k">WorkBoard.exe</code>），桌面快捷方式双击即开，托盘常驻。左侧边栏四个页签：</p>
+    <svg class="gui-svg" viewBox="0 0 920 340" role="img" aria-label="应用窗口示意：左侧边栏含今日、记忆、技能、能效四项，主区展示今日页的花环与主推工单">
+      <rect x="0" y="0" width="920" height="340" rx="12" fill="#f8fafc" stroke="#d5dbe6"/>
+      <rect x="0" y="0" width="920" height="34" rx="12" fill="#e7ebf2"/>
+      <rect x="0" y="22" width="920" height="12" fill="#e7ebf2"/>
+      <circle cx="20" cy="17" r="5" fill="#ef4444"/><circle cx="38" cy="17" r="5" fill="#f59e0b"/><circle cx="56" cy="17" r="5" fill="#10b981"/>
+      <text x="470" y="22" text-anchor="middle" font-size="12" fill="#556">AI In One · WorkBoard</text>
+      <rect x="0" y="34" width="170" height="306" fill="#2f3441" rx="0"/>
+      <g font-size="14">
+        <rect x="10" y="52" width="150" height="36" rx="8" fill="#3b82f6"/>
+        <text x="24" y="75" fill="#fff">今日</text>
+        <text x="24" y="123" fill="#aab4c5">记忆</text>
+        <text x="24" y="165" fill="#aab4c5">技能</text>
+        <text x="24" y="207" fill="#aab4c5">能效</text>
+        <text x="24" y="249" fill="#77809199">设置</text>
+      </g>
+      <text x="200" y="66" font-size="16" font-weight="bold" fill="#2a2f3a">今日 · 8 月 25 日</text>
+      <g>
+        <circle cx="270" cy="170" r="72" fill="none" stroke="#e2e8f0" stroke-width="20"/>
+        <circle cx="270" cy="170" r="72" fill="none" stroke="#10b981" stroke-width="20"
+          stroke-dasharray="158 452" stroke-linecap="butt" transform="rotate(-90 270 170)"/>
+        <circle cx="270" cy="170" r="72" fill="none" stroke="#f59e0b" stroke-width="20"
+          stroke-dasharray="90 452" stroke-dashoffset="-158" transform="rotate(-90 270 170)"/>
+        <circle cx="270" cy="170" r="72" fill="none" stroke="#3b82f6" stroke-width="20"
+          stroke-dasharray="124 452" stroke-dashoffset="-248" transform="rotate(-90 270 170)"/>
+        <text x="270" y="164" text-anchor="middle" font-size="22" font-weight="bold" fill="#2a2f3a">99</text>
+        <text x="270" y="186" text-anchor="middle" font-size="11" fill="#8a93a6">张在册工单</text>
+      </g>
+      <g font-size="12" fill="#55607a">
+        <circle cx="400" cy="120" r="5" fill="#10b981"/><text x="412" y="124">实盘</text>
+        <circle cx="400" cy="146" r="5" fill="#f59e0b"/><text x="412" y="150">回测与因子</text>
+        <circle cx="400" cy="172" r="5" fill="#3b82f6"/><text x="412" y="176">脚本与框架</text>
+        <circle cx="540" cy="120" r="5" fill="#7c3aed"/><text x="552" y="124">工具台</text>
+        <circle cx="540" cy="146" r="5" fill="#64748b"/><text x="552" y="150">环境杂务</text>
+      </g>
+      <text x="400" y="200" font-size="12" fill="#8a93a6">环上一圈 = 你的活分五科；</text>
+      <text x="400" y="218" font-size="12" fill="#8a93a6">分错了可以拖，拖过算数（记你的习惯）。</text>
+      <text x="660" y="66" font-size="13" font-weight="bold" fill="#b45309">主推 · 最多 3 朵</text>
+      <g>
+        <rect x="660" y="80" width="230" height="52" rx="10" fill="#fff" stroke="#e5eaf2"/>
+        <text x="674" y="102" font-size="12.5" fill="#2a2f3a" font-weight="bold">优等生GO 策略</text>
+        <text x="674" y="120" font-size="11" fill="#8a93a6">zcode + Cursor · 第 6 天</text>
+        <rect x="660" y="140" width="230" height="52" rx="10" fill="#fff" stroke="#e5eaf2"/>
+        <text x="674" y="162" font-size="12.5" fill="#2a2f3a" font-weight="bold">全局 rank 池</text>
+        <text x="674" y="180" font-size="11" fill="#8a93a6">zcode · 第 12 天</text>
+        <rect x="660" y="200" width="230" height="52" rx="10" fill="#fff" stroke="#e5eaf2"/>
+        <text x="674" y="222" font-size="12.5" fill="#2a2f3a" font-weight="bold">账本统一治理</text>
+        <text x="674" y="240" font-size="11" fill="#8a93a6">DSH · 第 3 天</text>
+      </g>
+      <rect x="200" y="270" width="690" height="46" rx="10" fill="#fffbeb" stroke="#fde68a"/>
+      <text x="216" y="298" font-size="12.5" fill="#713f12">手写便签：想到什么记一句，不会被 AI 改动。（今日页禁止中途清空、禁止改状态——干没干完，数据说了算）</text>
+    </svg>
+    <div class="grid2" style="margin-top:16px;">
+      <div class="mini">
+        <h3>记忆页</h3>
+        <p>AI 积累的经验与偏好的「给人看的浏览器」：白话卡 + 搜索 + 主题筛选。底层是本机一个独立小仓库，入库必过脱敏。</p>
+      </div>
+      <div class="mini">
+        <h3>技能页</h3>
+        <p>AI 起草的「经验草稿」排队等你签核：你看一眼，点【采纳】入库，或点【丢弃】。长年累月像树的年轮，一圈一圈看到 AI 在长大。</p>
+      </div>
+      <div class="mini">
+        <h3>能效页</h3>
+        <p>token 账本：每家工具烧了多少、每小时的效率、哪天突增（标红并附一句人话解释）。钱花在哪、谁费谁省，一目了然。</p>
+      </div>
+      <div class="mini">
+        <h3>设置页</h3>
+        <p>五块归类的规则在这儿调：什么算「等待中」、什么算「已结」，词表全公开可改，不藏黑话。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2><span class="num">4</span>举个具体例子：两张便条，一张工单</h2>
+    <p class="lead">「跨工具合并」是这张看板最值钱的本事——同一件事不管换了几家工具干，都只算一件事。</p>
+    <svg class="flow-svg" viewBox="0 0 920 190" role="img" aria-label="例子：zcode 和 Cursor 的两张会话便条，合并成一张工单卡">
+      <rect x="10" y="20" width="270" height="66" rx="10" fill="#eef1f6" stroke="#d5dbe6"/>
+      <text x="26" y="44" font-size="12.5" fill="#334" font-weight="bold">便条 A · zcode · 8 月 20 日</text>
+      <text x="26" y="66" font-size="12" fill="#55607a">「调优等生GO因子，跑回测对比…」</text>
+      <rect x="10" y="104" width="270" height="66" rx="10" fill="#eef1f6" stroke="#d5dbe6"/>
+      <text x="26" y="128" font-size="12.5" fill="#334" font-weight="bold">便条 B · Cursor · 8 月 21 日</text>
+      <text x="26" y="150" font-size="12" fill="#55607a">「改同一个策略的报告界面…」</text>
+      <path d="M286 95 H340" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#arr2)"/>
+      <text x="313" y="80" text-anchor="middle" font-size="11" fill="#7c3aed">GLM 认出</text>
+      <text x="313" y="118" text-anchor="middle" font-size="11" fill="#7c3aed">是同一件事</text>
+      <rect x="348" y="30" width="560" height="130" rx="12" fill="#fff" stroke="#c4b0f2" stroke-width="1.5"/>
+      <rect x="348" y="30" width="560" height="30" rx="12" fill="#f1ebfb"/>
+      <text x="366" y="50" font-size="13.5" fill="#2a2f3a" font-weight="bold">优等生GO 独立策略专题</text>
+      <text x="366" y="86" font-size="12" fill="#55607a">
+        <tspan x="366" dy="0">AI 编程工具：<tspan fill="#2563eb" font-weight="bold">zcode + Cursor</tspan>（两家合并，都标出来）</tspan>
+        <tspan x="366" dy="22">至今工期：第 6 天　·　状态：未结（近两周仍在动）</tspan>
+        <tspan x="366" dy="22">简述：把优等生GO 因子做成可实盘的独立策略，含回测与报告。</tspan>
+      </text>
+      <text x="770" y="50" font-size="11" fill="#7c3aed">来源：2 张便条可点开追溯</text>
+      <defs>
+        <marker id="arr2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+          <path d="M0,0 L7,3 L0,6 z" fill="#7c3aed"/>
+        </marker>
+      </defs>
+    </svg>
+    <p class="caption">当前实况：99 张工单里，有 7 张是这样的「跨工具合并」卡。</p>
+  </section>
+
+  <section class="panel">
+    <h2><span class="num">5</span>这个项目立下的三条「家规」</h2>
+    <div class="grid3">
+      <div class="mini">
+        <h3>大白话宪法</h3>
+        <p>页面里每个字非技术人也得看懂：黑话要么删掉、要么改成大白话加解释。上代版本就是因为在界面上「怼脸甩术语」被打回重做的。</p>
+      </div>
+      <div class="mini">
+        <h3>验收 = 双击 exe</h3>
+        <p>说得再好不算数，验收对象永远是「桌面快捷方式双击拉起的那个窗口」。开发页面、旧安装包、降级标记统统不算过关。</p>
+      </div>
+      <div class="mini">
+        <h3>先脱敏再出门</h3>
+        <p>内容要出网让 GLM 帮忙归类？先洗掉钥匙、路径、隐私。这一关没有旁路，「入库必过脱敏」写进了纪律。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2><span class="num">6</span>走到哪一步了？（2026-08-25 实况）</h2>
+    <svg class="flow-svg" viewBox="0 0 920 150" role="img" aria-label="进度时间线：8月22日 v1 到 v3 三轮快跑，8月23日 v4 全绿结案，8月24日起 HELIX 改版进行中">
+      <line x1="30" y1="70" x2="890" y2="70" stroke="#cbd5e1" stroke-width="4" stroke-linecap="round"/>
+      <g>
+        <circle cx="80" cy="70" r="9" fill="#ef4444"/>
+        <text x="80" y="40" text-anchor="middle" font-size="12" font-weight="bold" fill="#334">8-22 · v1–v3</text>
+        <text x="80" y="98" text-anchor="middle" font-size="11" fill="#8a93a6">三轮快跑：文本报告→</text>
+        <text x="80" y="114" text-anchor="middle" font-size="11" fill="#8a93a6">GUI；数据真、界面被打回</text>
+      </g>
+      <g>
+        <circle cx="380" cy="70" r="9" fill="#10b981"/>
+        <text x="380" y="40" text-anchor="middle" font-size="12" font-weight="bold" fill="#0e7a55">8-23 · v4 结案</text>
+        <text x="380" y="98" text-anchor="middle" font-size="11" fill="#8a93a6">界面推倒重做，全部验收过，</text>
+        <text x="380" y="114" text-anchor="middle" font-size="11" fill="#8a93a6">桌面双击可用的 exe 正式交付</text>
+      </g>
+      <g>
+        <circle cx="700" cy="70" r="9" fill="#3b82f6"/>
+        <circle cx="700" cy="70" r="15" fill="none" stroke="#3b82f6" stroke-opacity=".35" stroke-width="3"/>
+        <text x="700" y="40" text-anchor="middle" font-size="12" font-weight="bold" fill="#1d4ed8">8-24 起 · HELIX 改版</text>
+        <text x="700" y="98" text-anchor="middle" font-size="11" fill="#8a93a6">「今日页」已过人审；记忆页制作中；</text>
+        <text x="700" y="114" text-anchor="middle" font-size="11" fill="#8a93a6">技能/能效/收尾排队等着</text>
+      </g>
+    </svg>
+    <p class="caption">正在进行的一轮叫 HELIX（仪式标本）：把界面从「任务仓库」升级成「每天愿意打开的驾驶舱」——今日花环、五科分档、记忆图谱、技能年轮。数据与聚类管线不动，只换给人看的那层皮。</p>
+  </section>
+
+  <section class="recap">
+    <h2>一页回顾</h2>
+    <ul>
+      <li><b>是什么</b>：一块桌面看板（WorkBoard.exe），统一管理 6 家 AI 编程工具的干活记录、记忆和 token 账。</li>
+      <li><b>怎么运作</b>：扫描六家会话 → 脱敏 → GLM 把同一件事合并成工单 → 和 git / 收件箱对账 → 落进五块看板（<code class="k" style="background:rgba(255,255,255,.15);color:#fff;">tasks.json</code> 只读展示）。</li>
+      <li><b>四页签</b>：今日（花环+主推3朵+便签）｜记忆（白话浏览器）｜技能（草稿签核、年轮成长）｜能效（token 账本）。</li>
+      <li><b>底线设计</b>：大白话宪法、验收=双击 exe、先脱敏再出网。</li>
+      <li><b>现状</b>：v4 已于 8-23 结案交付；HELIX 改版进行中（今日页已过，记忆页制作中）。</li>
+    </ul>
+    <p class="one">一句话：它不是又一个新工具，而是把「已经在发生」的 AI 协作，变成一块你每天瞟一眼就心里有数的大屏。</p>
+  </section>
+
+</div>
+</body>
+</html>
